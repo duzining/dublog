@@ -1,6 +1,9 @@
 package com.du.dublog.common.utils;
 
+import com.du.dublog.framework.shiro.realm.UserRealm;
+import com.du.dublog.project.system.domain.User;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
@@ -25,5 +28,19 @@ public class ShiroUtils {
         getSubject().logout();
     }
 
-    public static User
+    public static User getSysUser(){
+        User user = null;
+        Object obj = getSubject().getPrincipal();
+        if (StringUtils.isNotNull(obj)){
+            user = new User();
+            BeanUtils.copyBeanProp(user,obj);
+        }
+        return user;
+    }
+
+    public static void clearCachedAuthorizationInfo(){
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        UserRealm realm = (UserRealm) rsm.getRealms().iterator().next();
+        realm.cla
+    }
 }
